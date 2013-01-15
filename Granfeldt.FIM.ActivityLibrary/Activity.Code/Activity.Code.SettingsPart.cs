@@ -36,7 +36,7 @@ namespace Granfeldt.FIM.ActivityLibrary.WebUIs
             //Add a TableRow for each textbox in the UI 
             controlLayoutTable.Rows.Add(this.AddTableRowTextBox("Title:", "txt" + InstanceTitle, 400, 100, false, ""));
             controlLayoutTable.Rows.Add(this.AddTableRowTextBox("References (DLL's):<br/><i>(please note that System.dll is added by default)</i>", "txt" + References, 400, 4000, true, "System.dll"));
-            controlLayoutTable.Rows.Add(this.AddTableRowTextBox("Parameters:<br/><i>(parameters are passed to the FIMDynamicFunction method in the shown order given here. Therefore, you should make sure that the function FIMDynamicFunction accepts the correct number of parameters and possible types)</i>", "txt" + Parameters, 400, 4000, true, ""));
+            controlLayoutTable.Rows.Add(this.AddTableRowTextBox("Parameters:<br/><i>(parameters are passed to the FIMDynamicFunction method in the order shown. Therefore, you should make sure that the function FIMDynamicFunction accepts the correct number of parameters and possible types)</i>", "txt" + Parameters, 400, 4000, true, ""));
             controlLayoutTable.Rows.Add(this.AddTableRowTextBox("Code:<br/><i>(code must always contain a class named FIMDynamicClass with a function named FIMDynamicFunction)</i>", "txt" + Code, 400, 4000, true, ""));
             controlLayoutTable.Rows.Add(this.AddTableRowTextBox("Destination:", "txt" + Destination, 400, 100, false, ""));
             this.Controls.Add(controlLayoutTable);
