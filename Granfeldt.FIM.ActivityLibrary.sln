@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Granfeldt.FIM.ActivityLibrary", "Granfeldt.FIM.ActivityLibrary\Granfeldt.FIM.ActivityLibrary.csproj", "{30020462-9E9D-47AB-B63D-C01B5CA6445E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30020462-9E9D-47AB-B63D-C01B5CA6445E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30020462-9E9D-47AB-B63D-C01B5CA6445E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30020462-9E9D-47AB-B63D-C01B5CA6445E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30020462-9E9D-47AB-B63D-C01B5CA6445E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
