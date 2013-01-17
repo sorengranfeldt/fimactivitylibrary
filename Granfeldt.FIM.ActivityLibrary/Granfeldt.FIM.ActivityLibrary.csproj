@@ -68,10 +68,10 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activity.Code\Activity.CodeRun.cs">
+    <Compile Include="Activity.CodeRun\Activity.CodeRun.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Activity.Code\Activity.CodeRun.Designer.cs">
+    <Compile Include="Activity.CodeRun\Activity.CodeRun.Designer.cs">
       <DependentUpon>Activity.CodeRun.cs</DependentUpon>
     </Compile>
     <Compile Include="Activity.LookupAttributeValue\Activity.LookupAttributeValue.cs">
@@ -83,8 +83,7 @@
     <Compile Include="Activity.LookupAttributeValue\Activity.LookupAttributeValue.SettingsPart.cs" />
     <Compile Include="Base.Classes\Base.ActivitySettings.cs" />
     <Compile Include="Base.Classes\Base.HelperClasses.cs" />
-    <Compile Include="Activity.Code\Activity.CodeRun.SettingsPart.cs" />
-    <Content Include="Activity.Code\CodeActivity.sample.regex.txt" />
+    <Compile Include="Activity.CodeRun\Activity.CodeRun.SettingsPart.cs" />
     <Compile Include="Base.Classes\Helper.FindResourcesActivity.cs">
       <SubType>Component</SubType>
     </Compile>
