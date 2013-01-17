@@ -1,4 +1,10 @@
-﻿using System;
+﻿// January 15, 2013 | Soren Granfeldt
+//  - initial version
+// January 17, 2013 | Soren Granfeldt
+//  - changed activity name from CodeActivity to CodeRunActivity
+//    due to clashes with built-in naming convention
+
+using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,12 +26,12 @@ using Microsoft.ResourceManagement.Workflow.Activities;
 
 namespace Granfeldt.FIM.ActivityLibrary
 {
-    public partial class CodeActivity : SequenceActivity
+    public partial class CodeRunActivity : SequenceActivity
     {
 
         #region Properties
 
-        public static DependencyProperty TargetResourceProperty = DependencyProperty.Register("TargetResource", typeof(Microsoft.ResourceManagement.WebServices.WSResourceManagement.ResourceType), typeof(Granfeldt.FIM.ActivityLibrary.CodeActivity));
+        public static DependencyProperty TargetResourceProperty = DependencyProperty.Register("TargetResource", typeof(Microsoft.ResourceManagement.WebServices.WSResourceManagement.ResourceType), typeof(Granfeldt.FIM.ActivityLibrary.CodeRunActivity));
         [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Visible)]
         [BrowsableAttribute(true)]
         [CategoryAttribute("Parameters")]
@@ -33,11 +39,11 @@ namespace Granfeldt.FIM.ActivityLibrary
         {
             get
             {
-                return ((Microsoft.ResourceManagement.WebServices.WSResourceManagement.ResourceType)(base.GetValue(Granfeldt.FIM.ActivityLibrary.CodeActivity.TargetResourceProperty)));
+                return ((Microsoft.ResourceManagement.WebServices.WSResourceManagement.ResourceType)(base.GetValue(Granfeldt.FIM.ActivityLibrary.CodeRunActivity.TargetResourceProperty)));
             }
             set
             {
-                base.SetValue(Granfeldt.FIM.ActivityLibrary.CodeActivity.TargetResourceProperty, value);
+                base.SetValue(Granfeldt.FIM.ActivityLibrary.CodeRunActivity.TargetResourceProperty, value);
             }
         }
 
@@ -45,7 +51,7 @@ namespace Granfeldt.FIM.ActivityLibrary
         /// <summary>
         /// The title of the current instance of the workflow
         /// </summary>
-        public static DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(CodeActivity));
+        public static DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(CodeRunActivity));
         [Description("Title")]
         [Category("Title Category")]
         [Browsable(true)]
@@ -54,15 +60,15 @@ namespace Granfeldt.FIM.ActivityLibrary
         {
             get
             {
-                return ((string)(base.GetValue(CodeActivity.TitleProperty)));
+                return ((string)(base.GetValue(CodeRunActivity.TitleProperty)));
             }
             set
             {
-                base.SetValue(CodeActivity.TitleProperty, value);
+                base.SetValue(CodeRunActivity.TitleProperty, value);
             }
         }
 
-        public static DependencyProperty ReferencesProperty = DependencyProperty.Register("References", typeof(string[]), typeof(CodeActivity));
+        public static DependencyProperty ReferencesProperty = DependencyProperty.Register("References", typeof(string[]), typeof(CodeRunActivity));
         [Description("References")]
         [Category("References Category")]
         [Browsable(true)]
@@ -71,15 +77,15 @@ namespace Granfeldt.FIM.ActivityLibrary
         {
             get
             {
-                return ((string[])(base.GetValue(CodeActivity.ReferencesProperty)));
+                return ((string[])(base.GetValue(CodeRunActivity.ReferencesProperty)));
             }
             set
             {
-                base.SetValue(CodeActivity.ReferencesProperty, value);
+                base.SetValue(CodeRunActivity.ReferencesProperty, value);
             }
         }
 
-        public static DependencyProperty ParametersProperty = DependencyProperty.Register("Parameters", typeof(string[]), typeof(CodeActivity));
+        public static DependencyProperty ParametersProperty = DependencyProperty.Register("Parameters", typeof(string[]), typeof(CodeRunActivity));
         [Description("Parameters")]
         [Category("Parameters Category")]
         [Browsable(true)]
@@ -88,15 +94,15 @@ namespace Granfeldt.FIM.ActivityLibrary
         {
             get
             {
-                return ((string[])(base.GetValue(CodeActivity.ParametersProperty)));
+                return ((string[])(base.GetValue(CodeRunActivity.ParametersProperty)));
             }
             set
             {
-                base.SetValue(CodeActivity.ParametersProperty, value);
+                base.SetValue(CodeRunActivity.ParametersProperty, value);
             }
         }
 
-        public static DependencyProperty ResolvedParameterExpressionProperty = DependencyProperty.Register("ResolvedParameterExpression", typeof(System.String), typeof(Granfeldt.FIM.ActivityLibrary.CodeActivity));
+        public static DependencyProperty ResolvedParameterExpressionProperty = DependencyProperty.Register("ResolvedParameterExpression", typeof(System.String), typeof(Granfeldt.FIM.ActivityLibrary.CodeRunActivity));
         [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Visible)]
         [BrowsableAttribute(true)]
         [CategoryAttribute("Misc")]
@@ -104,15 +110,15 @@ namespace Granfeldt.FIM.ActivityLibrary
         {
             get
             {
-                return ((string)(base.GetValue(Granfeldt.FIM.ActivityLibrary.CodeActivity.ResolvedParameterExpressionProperty)));
+                return ((string)(base.GetValue(Granfeldt.FIM.ActivityLibrary.CodeRunActivity.ResolvedParameterExpressionProperty)));
             }
             set
             {
-                base.SetValue(Granfeldt.FIM.ActivityLibrary.CodeActivity.ResolvedParameterExpressionProperty, value);
+                base.SetValue(Granfeldt.FIM.ActivityLibrary.CodeRunActivity.ResolvedParameterExpressionProperty, value);
             }
         }
 
-        public static DependencyProperty CodeProperty = DependencyProperty.Register("Code", typeof(string), typeof(CodeActivity));
+        public static DependencyProperty CodeProperty = DependencyProperty.Register("Code", typeof(string), typeof(CodeRunActivity));
         [Description("Code")]
         [Category("Code Category")]
         [Browsable(true)]
@@ -121,15 +127,15 @@ namespace Granfeldt.FIM.ActivityLibrary
         {
             get
             {
-                return ((string)(base.GetValue(CodeActivity.CodeProperty)));
+                return ((string)(base.GetValue(CodeRunActivity.CodeProperty)));
             }
             set
             {
-                base.SetValue(CodeActivity.CodeProperty, value);
+                base.SetValue(CodeRunActivity.CodeProperty, value);
             }
         }
 
-        public static DependencyProperty DestinationProperty = DependencyProperty.Register("Destination", typeof(string), typeof(CodeActivity));
+        public static DependencyProperty DestinationProperty = DependencyProperty.Register("Destination", typeof(string), typeof(CodeRunActivity));
         [Description("Destination")]
         [Category("Destination Category")]
         [Browsable(true)]
@@ -138,11 +144,11 @@ namespace Granfeldt.FIM.ActivityLibrary
         {
             get
             {
-                return ((string)(base.GetValue(CodeActivity.DestinationProperty)));
+                return ((string)(base.GetValue(CodeRunActivity.DestinationProperty)));
             }
             set
             {
-                base.SetValue(CodeActivity.DestinationProperty, value);
+                base.SetValue(CodeRunActivity.DestinationProperty, value);
             }
         }
 
@@ -167,7 +173,7 @@ namespace Granfeldt.FIM.ActivityLibrary
         string destinationObject = null;
         string destinationAttribute = null;
 
-        public CodeActivity()
+        public CodeRunActivity()
         {
             Debugging.Log("Enter :: Initialize");
             InitializeComponent();

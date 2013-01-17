@@ -8,7 +8,7 @@ using Microsoft.ResourceManagement.Workflow.Activities;
 
 namespace Granfeldt.FIM.ActivityLibrary.WebUIs
 {
-    class CodeActivitySettingsPart : BaseActivitySettingsPart
+    class CodeRunActivitySettingsPart : BaseActivitySettingsPart
     {
 
         const string InstanceTitle = "Title";
@@ -17,23 +17,16 @@ namespace Granfeldt.FIM.ActivityLibrary.WebUIs
         const string Code = "Code";
         const string Destination = "Destination";
 
-        /// <summary>
-        ///  Creates a Table that contains the controls used by the activity UI
-        ///  in the Workflow Designer of the FIM portal. Adds that Table to the
-        ///  collection of Controls that defines each activity that can be selected
-        ///  in the Workflow Designer of the FIM Portal. Calls the base class of 
-        ///  ActivitySettingsPart to render the controls in the UI.
-        /// </summary>
         protected override void CreateChildControls()
         {
             Table controlLayoutTable;
             controlLayoutTable = new Table();
 
-            //Width is set to 100% of the control size
+            // width is set to 100% of the control size
             controlLayoutTable.Width = Unit.Percentage(100.0);
             controlLayoutTable.BorderWidth = 0;
             controlLayoutTable.CellPadding = 2;
-            //Add a TableRow for each textbox in the UI 
+            // add a TableRow for each textbox in the UI 
             controlLayoutTable.Rows.Add(this.AddTableRowTextBox("Title:", "txt" + InstanceTitle, 400, 100, false, ""));
             controlLayoutTable.Rows.Add(this.AddTableRowTextBox("References (DLL's):<br/><i>(please note that System.dll is added by default)</i>", "txt" + References, 400, 4000, true, "System.dll"));
             controlLayoutTable.Rows.Add(this.AddTableRowTextBox("Parameters:<br/><i>(parameters are passed to the FIMDynamicFunction method in the order shown. Therefore, you should make sure that the function FIMDynamicFunction accepts the correct number of parameters and possible types)</i>", "txt" + Parameters, 400, 4000, true, ""));
@@ -49,7 +42,7 @@ namespace Granfeldt.FIM.ActivityLibrary.WebUIs
             {
                 return null;
             }
-            CodeActivity ThisActivity = new CodeActivity();
+            CodeRunActivity ThisActivity = new CodeRunActivity();
             ThisActivity.Title = this.GetText("txt" + InstanceTitle);
             ThisActivity.References = this.GetTextArray("txt" + References);
             ThisActivity.Parameters = this.GetTextArray("txt" + Parameters);
@@ -61,7 +54,7 @@ namespace Granfeldt.FIM.ActivityLibrary.WebUIs
 
         public override void LoadActivitySettings(Activity activity)
         {
-            CodeActivity ThisActivity = activity as CodeActivity;
+            CodeRunActivity ThisActivity = activity as CodeRunActivity;
             if (ThisActivity != null)
             {
                 this.SetText("txt" + InstanceTitle, ThisActivity.Title);
@@ -109,7 +102,7 @@ namespace Granfeldt.FIM.ActivityLibrary.WebUIs
         {
             get
             {
-                return string.Format("Code: {0}", this.GetText("txt" + InstanceTitle));
+                return string.Format("Code Run: {0}", this.GetText("txt" + InstanceTitle));
             }
         }
 

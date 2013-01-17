@@ -1,7 +1,8 @@
 ﻿PARAM
 (
 	[string] $AssemblyName = "Granfeldt.FIM.ActivityLibrary.dll",
-	[switch] $CreateCodeActivity
+	[switch] $CreateCodeRunActivity,
+	[switch] $CreateLookupActivity
 )
 
 BEGIN
@@ -18,13 +19,13 @@ PROCESS
 	$LoadedAssembly = [System.Reflection.Assembly]::LoadFile( (Resolve-Path $AssemblyName).Path )
 	$ManifestModule = $LoadedAssembly.ManifestModule -replace '\.dll$'
 
-	if ($CreateCodeActivity)
+	if ($CreateCodeRunActivity)
 	{
 		$Params = @{ `
 			DisplayName = 'Code Activity'
-			Description = 'Execute C# code as an activity'
-			ActivityName = "$ManifestModule.CodeActivity"
-			TypeName = "$ManifestModule.WebUIs.CodeActivitySettingsPart"
+			Description = 'Compile and execute C# code as an activity'
+			ActivityName = "$ManifestModule.CodeRunActivity"
+			TypeName = "$ManifestModule.WebUIs.CodeRunActivitySettingsPart"
 			IsActionActivity = $true
 			AssemblyName = $LoadedAssembly.Fullname
 		}
@@ -32,6 +33,19 @@ PROCESS
 		.\New-FIMActivityInformationConfigurationObject.ps1 @Params
 	}
 
+	if ($CreateLookupActivity)
+	{
+		$Params = @{ `
+			DisplayName = 'Lookup Attribute Value'
+			Description = 'Using XPath query looks up value in FIM Service'
+			ActivityName = "$ManifestModule.LookupAttributeValueActivity"
+			TypeName = "$ManifestModule.WebUIs.LookupAttributeValueActivitySettingsPart"
+			IsActionActivity = $true
+			AssemblyName = $LoadedAssembly.Fullname
+		}
+		$Params
+		.\New-FIMActivityInformationConfigurationObject.ps1 @Params
+	}
 }
 
 END 

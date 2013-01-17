@@ -54,6 +54,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft Forefront Identity Manager\2010\Service\Microsoft.ResourceManagement.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Workflow.Activities" />
     <Reference Include="System.Workflow.ComponentModel" />
     <Reference Include="System.Workflow.Runtime" />
@@ -67,22 +68,42 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activity.Code\Activity.Code.cs">
+    <Compile Include="Activity.Code\Activity.CodeRun.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Activity.Code\Activity.Code.Designer.cs">
-      <DependentUpon>Activity.Code.cs</DependentUpon>
+    <Compile Include="Activity.Code\Activity.CodeRun.Designer.cs">
+      <DependentUpon>Activity.CodeRun.cs</DependentUpon>
     </Compile>
+    <Compile Include="Activity.LookupAttributeValue\Activity.LookupAttributeValue.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Activity.LookupAttributeValue\Activity.LookupAttributeValue.Designer.cs">
+      <DependentUpon>Activity.LookupAttributeValue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Activity.LookupAttributeValue\Activity.LookupAttributeValue.SettingsPart.cs" />
     <Compile Include="Base.Classes\Base.ActivitySettings.cs" />
     <Compile Include="Base.Classes\Base.HelperClasses.cs" />
-    <Compile Include="Activity.Code\Activity.Code.SettingsPart.cs" />
+    <Compile Include="Activity.Code\Activity.CodeRun.SettingsPart.cs" />
     <Content Include="Activity.Code\CodeActivity.sample.regex.txt" />
+    <Compile Include="Base.Classes\Helper.FindResourcesActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Base.Classes\Helper.FindResourcesActivity.Designer.cs">
+      <DependentUpon>Helper.FindResourcesActivity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base.Classes\Helper.UpdateSingleValueAttributeAsNeededActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Base.Classes\Helper.UpdateSingleValueAttributeAsNeededActivity.Designer.cs">
+      <DependentUpon>Helper.UpdateSingleValueAttributeAsNeededActivity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Content Include="readme.txt" />
     <None Include="Add-AssemblyToGlobalAssemblyCache.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -105,6 +126,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.Targets" />
   <Import Project="$(MSBuildToolsPath)\Workflow.Targets" />
 </Project>

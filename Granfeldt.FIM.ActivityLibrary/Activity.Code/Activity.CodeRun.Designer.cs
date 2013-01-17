@@ -13,7 +13,7 @@ using System.Workflow.Activities.Rules;
 
 namespace Granfeldt.FIM.ActivityLibrary
 {
-    public partial class CodeActivity
+    public partial class CodeRunActivity
     {
         #region Designer generated code
 
@@ -106,7 +106,7 @@ namespace Granfeldt.FIM.ActivityLibrary
             // 
             this.ReadTarget.ActorId = new System.Guid("00000000-0000-0000-0000-000000000000");
             this.ReadTarget.Name = "ReadTarget";
-            activitybind1.Name = "CodeActivity";
+            activitybind1.Name = "CodeRunActivity";
             activitybind1.Path = "TargetResource";
             this.ReadTarget.ResourceId = new System.Guid("00000000-0000-0000-0000-000000000000");
             this.ReadTarget.SelectionAttributes = null;
@@ -143,7 +143,7 @@ namespace Granfeldt.FIM.ActivityLibrary
             // 
             this.ResolveParameterValue.GrammarExpression = null;
             this.ResolveParameterValue.Name = "ResolveParameterValue";
-            activitybind2.Name = "CodeActivity";
+            activitybind2.Name = "CodeRunActivity";
             activitybind2.Path = "ResolvedParameterExpression";
             this.ResolveParameterValue.WorkflowDictionaryKey = null;
             this.ResolveParameterValue.SetBinding(Microsoft.ResourceManagement.Workflow.Activities.ResolveGrammarActivity.ResolvedExpressionProperty, ((System.Workflow.ComponentModel.ActivityBind)(activitybind2)));
@@ -195,26 +195,26 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.ResolveAllParameters.Condition = codecondition3;
             this.ResolveAllParameters.Name = "ResolveAllParameters";
             // 
-            // CodeActivity
+            // CodeRunActivity
             // 
             this.Activities.Add(this.ResolveAllParameters);
             this.Activities.Add(this.CompileCode);
             this.Activities.Add(this.ExecuteCode);
             this.Activities.Add(this.ShouldUpdateTarget);
-            this.Name = "CodeActivity";
+            this.Name = "CodeRunActivity";
             this.CanModifyActivities = false;
 
         }
 
         #endregion
 
-        private System.Workflow.Activities.CodeActivity CatchAndArgumentException;
+        private CodeActivity CatchAndArgumentException;
 
         private FaultHandlerActivity faultHandlerActivity1;
 
         private FaultHandlersActivity faultHandlersActivity3;
 
-        private System.Workflow.Activities.CodeActivity ExitGracefully;
+        private CodeActivity ExitGracefully;
 
         private Microsoft.ResourceManagement.Workflow.Activities.UpdateResourceActivity UpdateTargetResource;
 
@@ -236,23 +236,25 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         private FaultHandlersActivity faultHandlersActivity2;
 
-        private System.Workflow.Activities.CodeActivity NullOrInvalidGrammar;
+        private CodeActivity NullOrInvalidGrammar;
 
         private FaultHandlerActivity faultHandlerActivity2;
 
-        private System.Workflow.Activities.CodeActivity ExecuteCode;
+        private CodeActivity ExecuteCode;
 
         private FaultHandlersActivity faultHandlersActivity1;
 
-        private System.Workflow.Activities.CodeActivity CompileCode;
+        private CodeActivity CompileCode;
 
-        private System.Workflow.Activities.CodeActivity SaveResolvedParameterValue;
+        private CodeActivity SaveResolvedParameterValue;
 
         private Microsoft.ResourceManagement.Workflow.Activities.ResolveGrammarActivity ResolveParameterValue;
 
         private SequenceActivity ResolveAndSave;
 
         private WhileActivity ResolveAllParameters;
+
+
 
 
 
