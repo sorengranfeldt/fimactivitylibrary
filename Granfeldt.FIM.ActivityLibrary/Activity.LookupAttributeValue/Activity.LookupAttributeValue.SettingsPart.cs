@@ -107,7 +107,7 @@ namespace Granfeldt.FIM.ActivityLibrary.WebUIs
 
         public override string Title
         {
-            get { return "Lookup Attribute Value"; }
+            get { return "Lookup Value"; }
         }
 
         public override bool ValidateInputs()
