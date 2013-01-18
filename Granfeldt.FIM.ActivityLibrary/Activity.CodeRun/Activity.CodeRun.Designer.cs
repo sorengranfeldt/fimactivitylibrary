@@ -26,23 +26,12 @@ namespace Granfeldt.FIM.ActivityLibrary
         private void InitializeComponent()
         {
             this.CanModifyActivities = true;
-            System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
             System.Workflow.ComponentModel.ActivityBind activitybind1 = new System.Workflow.ComponentModel.ActivityBind();
-            System.Workflow.ComponentModel.ActivityBind activitybind2 = new System.Workflow.ComponentModel.ActivityBind();
+            System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
             System.Workflow.Activities.CodeCondition codecondition2 = new System.Workflow.Activities.CodeCondition();
-            System.Workflow.Activities.CodeCondition codecondition3 = new System.Workflow.Activities.CodeCondition();
-            this.CatchAndArgumentException = new System.Workflow.Activities.CodeActivity();
-            this.faultHandlerActivity1 = new System.Workflow.ComponentModel.FaultHandlerActivity();
-            this.faultHandlersActivity3 = new System.Workflow.ComponentModel.FaultHandlersActivity();
-            this.UpdateTargetResource = new Microsoft.ResourceManagement.Workflow.Activities.UpdateResourceActivity();
-            this.NoUpdateNeeded = new System.Workflow.Activities.IfElseBranchActivity();
-            this.UpdateTarget = new System.Workflow.Activities.IfElseBranchActivity();
             this.NullOrInvalidGrammar = new System.Workflow.Activities.CodeActivity();
-            this.CompareAndPrepareUpdate = new System.Workflow.Activities.IfElseActivity();
-            this.ReadTarget = new Microsoft.ResourceManagement.Workflow.Activities.ReadResourceActivity();
             this.faultHandlerActivity2 = new System.Workflow.ComponentModel.FaultHandlerActivity();
-            this.ExitGracefully = new System.Workflow.Activities.CodeActivity();
-            this.UpdateIfNecessary = new System.Workflow.Activities.SequenceActivity();
+            this.UpdateTargetIfNeeded = new Granfeldt.FIM.ActivityLibrary.UpdateSingleValueAttributeAsNeededActivity();
             this.faultHandlersActivity2 = new System.Workflow.ComponentModel.FaultHandlersActivity();
             this.SaveResolvedParameterValue = new System.Workflow.Activities.CodeActivity();
             this.ResolveParameterValue = new Microsoft.ResourceManagement.Workflow.Activities.ResolveGrammarActivity();
@@ -50,67 +39,15 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.ConditionalUpdateTarget = new System.Workflow.Activities.IfElseBranchActivity();
             this.faultHandlersActivity1 = new System.Workflow.ComponentModel.FaultHandlersActivity();
             this.ResolveAndSave = new System.Workflow.Activities.SequenceActivity();
-            this.ShouldUpdateTarget = new System.Workflow.Activities.IfElseActivity();
+            this.ShouldUpdateTargetOrWorkflowData = new System.Workflow.Activities.IfElseActivity();
             this.ExecuteCode = new System.Workflow.Activities.CodeActivity();
             this.CompileCode = new System.Workflow.Activities.CodeActivity();
             this.ResolveAllParameters = new System.Workflow.Activities.WhileActivity();
-            // 
-            // CatchAndArgumentException
-            // 
-            this.CatchAndArgumentException.Name = "CatchAndArgumentException";
-            this.CatchAndArgumentException.ExecuteCode += new System.EventHandler(this.CatchArgumentException_ExecuteCode);
-            // 
-            // faultHandlerActivity1
-            // 
-            this.faultHandlerActivity1.Activities.Add(this.CatchAndArgumentException);
-            this.faultHandlerActivity1.FaultType = typeof(System.ArgumentNullException);
-            this.faultHandlerActivity1.Name = "faultHandlerActivity1";
-            // 
-            // faultHandlersActivity3
-            // 
-            this.faultHandlersActivity3.Activities.Add(this.faultHandlerActivity1);
-            this.faultHandlersActivity3.Name = "faultHandlersActivity3";
-            // 
-            // UpdateTargetResource
-            // 
-            this.UpdateTargetResource.ActorId = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.UpdateTargetResource.ApplyAuthorizationPolicy = false;
-            this.UpdateTargetResource.Name = "UpdateTargetResource";
-            this.UpdateTargetResource.ResourceId = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.UpdateTargetResource.UpdateParameters = null;
-            // 
-            // NoUpdateNeeded
-            // 
-            this.NoUpdateNeeded.Name = "NoUpdateNeeded";
-            // 
-            // UpdateTarget
-            // 
-            this.UpdateTarget.Activities.Add(this.UpdateTargetResource);
-            this.UpdateTarget.Activities.Add(this.faultHandlersActivity3);
-            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.isTargetUpdateNeeded_Condition);
-            this.UpdateTarget.Condition = codecondition1;
-            this.UpdateTarget.Name = "UpdateTarget";
             // 
             // NullOrInvalidGrammar
             // 
             this.NullOrInvalidGrammar.Name = "NullOrInvalidGrammar";
             this.NullOrInvalidGrammar.ExecuteCode += new System.EventHandler(this.NonExistingGrammarException_ExecuteCode);
-            // 
-            // CompareAndPrepareUpdate
-            // 
-            this.CompareAndPrepareUpdate.Activities.Add(this.UpdateTarget);
-            this.CompareAndPrepareUpdate.Activities.Add(this.NoUpdateNeeded);
-            this.CompareAndPrepareUpdate.Name = "CompareAndPrepareUpdate";
-            // 
-            // ReadTarget
-            // 
-            this.ReadTarget.ActorId = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.ReadTarget.Name = "ReadTarget";
-            activitybind1.Name = "CodeRunActivity";
-            activitybind1.Path = "TargetResource";
-            this.ReadTarget.ResourceId = new System.Guid("00000000-0000-0000-0000-000000000000");
-            this.ReadTarget.SelectionAttributes = null;
-            this.ReadTarget.SetBinding(Microsoft.ResourceManagement.Workflow.Activities.ReadResourceActivity.ResourceProperty, ((System.Workflow.ComponentModel.ActivityBind)(activitybind1)));
             // 
             // faultHandlerActivity2
             // 
@@ -118,16 +55,14 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.faultHandlerActivity2.FaultType = typeof(System.ArgumentException);
             this.faultHandlerActivity2.Name = "faultHandlerActivity2";
             // 
-            // ExitGracefully
+            // UpdateTargetIfNeeded
             // 
-            this.ExitGracefully.Name = "ExitGracefully";
-            this.ExitGracefully.ExecuteCode += new System.EventHandler(this.ExitGracefully_ExecuteCode);
-            // 
-            // UpdateIfNecessary
-            // 
-            this.UpdateIfNecessary.Activities.Add(this.ReadTarget);
-            this.UpdateIfNecessary.Activities.Add(this.CompareAndPrepareUpdate);
-            this.UpdateIfNecessary.Name = "UpdateIfNecessary";
+            this.UpdateTargetIfNeeded.ActorId = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.UpdateTargetIfNeeded.AttributeName = null;
+            this.UpdateTargetIfNeeded.Name = "UpdateTargetIfNeeded";
+            this.UpdateTargetIfNeeded.NewValue = null;
+            this.UpdateTargetIfNeeded.TargetId = new System.Guid("00000000-0000-0000-0000-000000000000");
+            this.UpdateTargetIfNeeded.TargetResource = null;
             // 
             // faultHandlersActivity2
             // 
@@ -143,10 +78,10 @@ namespace Granfeldt.FIM.ActivityLibrary
             // 
             this.ResolveParameterValue.GrammarExpression = null;
             this.ResolveParameterValue.Name = "ResolveParameterValue";
-            activitybind2.Name = "CodeRunActivity";
-            activitybind2.Path = "ResolvedParameterExpression";
+            activitybind1.Name = "CodeRunActivity";
+            activitybind1.Path = "ResolvedParameterExpression";
             this.ResolveParameterValue.WorkflowDictionaryKey = null;
-            this.ResolveParameterValue.SetBinding(Microsoft.ResourceManagement.Workflow.Activities.ResolveGrammarActivity.ResolvedExpressionProperty, ((System.Workflow.ComponentModel.ActivityBind)(activitybind2)));
+            this.ResolveParameterValue.SetBinding(Microsoft.ResourceManagement.Workflow.Activities.ResolveGrammarActivity.ResolvedExpressionProperty, ((System.Workflow.ComponentModel.ActivityBind)(activitybind1)));
             // 
             // UpdateWorkflowData
             // 
@@ -154,10 +89,9 @@ namespace Granfeldt.FIM.ActivityLibrary
             // 
             // ConditionalUpdateTarget
             // 
-            this.ConditionalUpdateTarget.Activities.Add(this.UpdateIfNecessary);
-            this.ConditionalUpdateTarget.Activities.Add(this.ExitGracefully);
-            codecondition2.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ShouldUpdateTarget_Condition);
-            this.ConditionalUpdateTarget.Condition = codecondition2;
+            this.ConditionalUpdateTarget.Activities.Add(this.UpdateTargetIfNeeded);
+            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ShouldUpdateTarget_Condition);
+            this.ConditionalUpdateTarget.Condition = codecondition1;
             this.ConditionalUpdateTarget.Name = "ConditionalUpdateTarget";
             // 
             // faultHandlersActivity1
@@ -171,11 +105,11 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.ResolveAndSave.Activities.Add(this.faultHandlersActivity2);
             this.ResolveAndSave.Name = "ResolveAndSave";
             // 
-            // ShouldUpdateTarget
+            // ShouldUpdateTargetOrWorkflowData
             // 
-            this.ShouldUpdateTarget.Activities.Add(this.ConditionalUpdateTarget);
-            this.ShouldUpdateTarget.Activities.Add(this.UpdateWorkflowData);
-            this.ShouldUpdateTarget.Name = "ShouldUpdateTarget";
+            this.ShouldUpdateTargetOrWorkflowData.Activities.Add(this.ConditionalUpdateTarget);
+            this.ShouldUpdateTargetOrWorkflowData.Activities.Add(this.UpdateWorkflowData);
+            this.ShouldUpdateTargetOrWorkflowData.Name = "ShouldUpdateTargetOrWorkflowData";
             // 
             // ExecuteCode
             // 
@@ -191,8 +125,8 @@ namespace Granfeldt.FIM.ActivityLibrary
             // 
             this.ResolveAllParameters.Activities.Add(this.ResolveAndSave);
             this.ResolveAllParameters.Activities.Add(this.faultHandlersActivity1);
-            codecondition3.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.MoreParametersToResolve_Condition);
-            this.ResolveAllParameters.Condition = codecondition3;
+            codecondition2.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.MoreParametersToResolve_Condition);
+            this.ResolveAllParameters.Condition = codecondition2;
             this.ResolveAllParameters.Name = "ResolveAllParameters";
             // 
             // CodeRunActivity
@@ -200,7 +134,7 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.Activities.Add(this.ResolveAllParameters);
             this.Activities.Add(this.CompileCode);
             this.Activities.Add(this.ExecuteCode);
-            this.Activities.Add(this.ShouldUpdateTarget);
+            this.Activities.Add(this.ShouldUpdateTargetOrWorkflowData);
             this.Name = "CodeRunActivity";
             this.CanModifyActivities = false;
 
@@ -208,31 +142,13 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         #endregion
 
-        private CodeActivity CatchAndArgumentException;
-
-        private FaultHandlerActivity faultHandlerActivity1;
-
-        private FaultHandlersActivity faultHandlersActivity3;
-
-        private CodeActivity ExitGracefully;
-
-        private Microsoft.ResourceManagement.Workflow.Activities.UpdateResourceActivity UpdateTargetResource;
-
-        private IfElseBranchActivity NoUpdateNeeded;
-
-        private IfElseBranchActivity UpdateTarget;
-
-        private IfElseActivity CompareAndPrepareUpdate;
-
-        private Microsoft.ResourceManagement.Workflow.Activities.ReadResourceActivity ReadTarget;
-
-        private SequenceActivity UpdateIfNecessary;
+        private UpdateSingleValueAttributeAsNeededActivity UpdateTargetIfNeeded;
 
         private IfElseBranchActivity UpdateWorkflowData;
 
         private IfElseBranchActivity ConditionalUpdateTarget;
 
-        private IfElseActivity ShouldUpdateTarget;
+        private IfElseActivity ShouldUpdateTargetOrWorkflowData;
 
         private FaultHandlersActivity faultHandlersActivity2;
 
@@ -253,6 +169,12 @@ namespace Granfeldt.FIM.ActivityLibrary
         private SequenceActivity ResolveAndSave;
 
         private WhileActivity ResolveAllParameters;
+
+
+
+
+
+
 
 
 

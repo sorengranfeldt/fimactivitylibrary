@@ -121,6 +121,8 @@ namespace Granfeldt.FIM.ActivityLibrary
 
             e.Result = false;
             object CurrentValue = TargetResource[this.AttributeName];
+            Debugging.Log("Type current", CurrentValue == null ? "NULL" : CurrentValue.GetType().ToString());
+            Debugging.Log("Type new value", this.NewValue == null ? "NULL" : this.NewValue.GetType().ToString());
             if (object.Equals(CurrentValue, this.NewValue))
             {
                 Debugging.Log(string.Format("No need to update {0}. Value is already '{1}'", this.AttributeName, this.NewValue));

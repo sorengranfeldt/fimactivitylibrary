@@ -105,7 +105,7 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         #endregion
 
-        private Microsoft.ResourceManagement.Workflow.Activities.ReadResourceActivity ReadResource;
+        //private Microsoft.ResourceManagement.Workflow.Activities.ReadResourceActivity ReadResource;
         private IfElseBranchActivity UpdateWorkflowDataBranch;
         private IfElseBranchActivity UpdateTargetBranch;
         private IfElseActivity UpdateTargetOrWorkflowData;

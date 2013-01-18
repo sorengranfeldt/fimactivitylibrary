@@ -3,6 +3,8 @@
 // January 17, 2013 | Soren Granfeldt
 //  - changed activity name from CodeActivity to CodeRunActivity
 //    due to clashes with built-in naming convention
+// January 18, 2013 | Soren Granfeldt
+//  - changed update to use helper update activity
 
 using System;
 using System.CodeDom.Compiler;
@@ -175,9 +177,7 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         public CodeRunActivity()
         {
-            Debugging.Log("Enter :: Initialize");
             InitializeComponent();
-            Debugging.Log("Exit :: Initialize");
         }
 
         /// <summary>
@@ -291,47 +291,15 @@ namespace Granfeldt.FIM.ActivityLibrary
                 else if (destinationObject.Equals("Target", StringComparison.OrdinalIgnoreCase))
                 {
                     e.Result = true;
-                    ReadTarget.ActorId = WellKnownGuids.FIMServiceAccount;
-                    ReadTarget.ResourceId = containingWorkflow.TargetId;
-                    ReadTarget.SelectionAttributes = new string[] { destinationAttribute };
+                    UpdateTargetIfNeeded.ActorId = WellKnownGuids.FIMServiceAccount;
+                    UpdateTargetIfNeeded.AttributeName = destinationAttribute;
+                    UpdateTargetIfNeeded.NewValue = codeReturnValue;
+                    UpdateTargetIfNeeded.TargetId = containingWorkflow.TargetId;
                 }
             }
             else
             {
                 Debugging.Log(new Exception("Could not resolved destination. Please specify as [//Target/Attribute] or [//WorkflowData/Parameter]"));
-            }
-        }
-
-        private void isTargetUpdateNeeded_Condition(object sender, ConditionalEventArgs e)
-        {
-            List<UpdateRequestParameter> updateParameters = new List<UpdateRequestParameter>();
-
-            e.Result = false;
-            object currentValue = TargetResource[destinationAttribute];
-            if (object.Equals(currentValue, codeReturnValue))
-            {
-                Debugging.Log(string.Format("No need to update {0}. Value is already '{1}'", destinationAttribute, codeReturnValue));
-            }
-            else
-            {
-                e.Result = true;
-
-                // if code returns null then remove current value; otherwise
-                // update to new value
-                updateParameters.Add(new UpdateRequestParameter(destinationAttribute, codeReturnValue == null ? UpdateMode.Remove : UpdateMode.Modify, codeReturnValue == null ? currentValue : codeReturnValue));
-
-                Debugging.Log("Updating", containingWorkflow.TargetId);
-                UpdateTargetResource.ActorId = WellKnownGuids.FIMServiceAccount;
-                UpdateTargetResource.ResourceId = containingWorkflow.TargetId;
-                UpdateTargetResource.UpdateParameters = updateParameters.ToArray();
-                if (codeReturnValue == null)
-                {
-                    Debugging.Log(string.Format("Removing existing value '{0}' from {1}", currentValue, destinationAttribute));
-                }
-                else
-                {
-                    Debugging.Log(string.Format("Updating {0} from '{1}' to '{2}'", destinationAttribute, currentValue == null ? "(null)" : currentValue, codeReturnValue == null ? "(null)" : codeReturnValue));
-                }
             }
         }
 
@@ -343,11 +311,6 @@ namespace Granfeldt.FIM.ActivityLibrary
             // which effectively results in a 'Delete' operation on
             // the target attribute value (if present)
             Debugging.Log("Error: Argument Exception");
-        }
-
-        private void ExitGracefully_ExecuteCode(object sender, EventArgs e)
-        {
-            Debugging.Log("Activity exited");
         }
 
     }
