@@ -1,5 +1,7 @@
 ﻿// January 17, 2013 | Soren Granfeldt
 //  - initial version
+// January 22, 2013 | Soren Granfeldt
+//  - added additional code to handle comparison of date, booleans and reference types
 
 using System;
 using System.Collections;
@@ -16,6 +18,7 @@ using System.Workflow.ComponentModel.Serialization;
 using System.Workflow.Runtime;
 using Microsoft.ResourceManagement.WebServices.WSResourceManagement;
 using Microsoft.ResourceManagement.Workflow.Activities;
+using System.Text.RegularExpressions;
 
 namespace Granfeldt.FIM.ActivityLibrary
 {
@@ -115,25 +118,75 @@ namespace Granfeldt.FIM.ActivityLibrary
             InitializeComponent();
         }
 
+        private static bool ShouldUpdateAttribute(object sourceValue, object targetValue)
+        {
+            if (targetValue == null || sourceValue == null)
+            {
+                if (targetValue != null || sourceValue != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                Debugging.Log("Source value", sourceValue);
+                Debugging.Log("Target value", targetValue);
+
+                if (!targetValue.ToString().Equals(sourceValue.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        private static object CleanAndFormatFIMValue(object value)
+        {
+            if (value == null)
+                return null;
+            if (value.GetType() == typeof(bool))
+                return value;
+
+            // if the source value is a date, we need to 
+            // format the date for the update to take
+            // the value
+            DateTime outputDate;
+            if (DateTime.TryParse(value.ToString(), out outputDate))
+            {
+                value = outputDate.ToString("yyyy-MM-ddTHH:mm:ss.000");
+                return value;
+            }
+
+            // if it's a reference value, we need to remove leading urn:uuid text
+            // before later comparison
+            value = Regex.Replace(value.ToString(), "^urn:uuid:", "", RegexOptions.IgnoreCase);
+            return value;
+        }
+
         private void TargetUpdateNeeded_Condition(object sender, ConditionalEventArgs e)
         {
             List<UpdateRequestParameter> updateParameters = new List<UpdateRequestParameter>();
 
             e.Result = false;
             object CurrentValue = TargetResource[this.AttributeName];
-            Debugging.Log("Type current", CurrentValue == null ? "NULL" : CurrentValue.GetType().ToString());
-            Debugging.Log("Type new value", this.NewValue == null ? "NULL" : this.NewValue.GetType().ToString());
-            if (object.Equals(CurrentValue, this.NewValue))
-            {
-                Debugging.Log(string.Format("No need to update {0}. Value is already '{1}'", this.AttributeName, this.NewValue));
-            }
-            else
+
+            object convertedSourceValue = CleanAndFormatFIMValue(CurrentValue);
+            object convertedNewValue = CleanAndFormatFIMValue(this.NewValue);
+
+            if (ShouldUpdateAttribute(convertedSourceValue, convertedNewValue))
             {
                 e.Result = true;
 
                 // if the new value is null then remove current value.
                 // otherwise, update attribute to new value
-                updateParameters.Add(new UpdateRequestParameter(this.AttributeName, this.NewValue == null ? UpdateMode.Remove : UpdateMode.Modify, this.NewValue == null ? CurrentValue : this.NewValue));
+                updateParameters.Add(new UpdateRequestParameter(this.AttributeName, this.NewValue == null ? UpdateMode.Remove : UpdateMode.Modify, this.NewValue == null ? CurrentValue : convertedNewValue));
 
                 UpdateResource.ActorId = this.ActorId;
                 UpdateResource.ResourceId = this.TargetId;
@@ -147,6 +200,11 @@ namespace Granfeldt.FIM.ActivityLibrary
                     Debugging.Log(string.Format("Updating {0} from '{1}' to '{2}'", this.AttributeName, CurrentValue == null ? "(null)" : CurrentValue, this.NewValue == null ? "(null)" : this.NewValue));
                 }
             }
+            else
+            {
+                Debugging.Log(string.Format("No need to update {0}. Value is already '{1}'", this.AttributeName, convertedNewValue));
+            }
+
         }
 
         private void SetupReadTarget_ExecuteCode(object sender, EventArgs e)
