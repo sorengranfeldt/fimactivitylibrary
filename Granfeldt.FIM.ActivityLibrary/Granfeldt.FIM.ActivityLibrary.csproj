@@ -74,6 +74,27 @@
     <Compile Include="Activity.CodeRun\Activity.CodeRun.Designer.cs">
       <DependentUpon>Activity.CodeRun.cs</DependentUpon>
     </Compile>
+    <Compile Include="Activity.CopyValues\Activity.CopyValues.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Activity.CopyValues\Activity.CopyValues.designer.cs">
+      <DependentUpon>Activity.CopyValues.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Activity.CopyValues\Activity.CopyValues.SettingsPart.cs" />
+    <Compile Include="Activity.CreateObject\Activity.CreateObject.SettingsPart.cs" />
+    <Compile Include="Activity.CreateObject\Activity.CreateObject.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Activity.CreateObject\Activity.CreateObject.Designer.cs">
+      <DependentUpon>Activity.CreateObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Activity.DeleteObject\Activity.DeleteObject.SettingsPart.cs" />
+    <Compile Include="Activity.DeleteObject\Activity.DeleteObject.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Activity.DeleteObject\Activity.DeleteObject.Designer.cs">
+      <DependentUpon>Activity.DeleteObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Activity.LookupAttributeValue\Activity.LookupAttributeValue.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -124,6 +145,11 @@
     <None Include="Reinstall.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Activity.CreateObject\Activity.CreateObject.rules">
+      <DependentUpon>Activity.CreateObject.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.Targets" />

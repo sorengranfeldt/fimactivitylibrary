@@ -39,6 +39,7 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.ConditionalUpdateTarget = new System.Workflow.Activities.IfElseBranchActivity();
             this.faultHandlersActivity1 = new System.Workflow.ComponentModel.FaultHandlersActivity();
             this.ResolveAndSave = new System.Workflow.Activities.SequenceActivity();
+            this.ExitGracefully = new System.Workflow.Activities.CodeActivity();
             this.ShouldUpdateTargetOrWorkflowData = new System.Workflow.Activities.IfElseActivity();
             this.ExecuteCode = new System.Workflow.Activities.CodeActivity();
             this.CompileCode = new System.Workflow.Activities.CodeActivity();
@@ -105,6 +106,11 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.ResolveAndSave.Activities.Add(this.faultHandlersActivity2);
             this.ResolveAndSave.Name = "ResolveAndSave";
             // 
+            // ExitGracefully
+            // 
+            this.ExitGracefully.Name = "ExitGracefully";
+            this.ExitGracefully.ExecuteCode += new System.EventHandler(this.ExitGracefully_ExecuteCode);
+            // 
             // ShouldUpdateTargetOrWorkflowData
             // 
             this.ShouldUpdateTargetOrWorkflowData.Activities.Add(this.ConditionalUpdateTarget);
@@ -135,12 +141,15 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.Activities.Add(this.CompileCode);
             this.Activities.Add(this.ExecuteCode);
             this.Activities.Add(this.ShouldUpdateTargetOrWorkflowData);
+            this.Activities.Add(this.ExitGracefully);
             this.Name = "CodeRunActivity";
             this.CanModifyActivities = false;
 
         }
 
         #endregion
+
+        private CodeActivity ExitGracefully;
 
         private UpdateSingleValueAttributeAsNeededActivity UpdateTargetIfNeeded;
 
@@ -169,6 +178,7 @@ namespace Granfeldt.FIM.ActivityLibrary
         private SequenceActivity ResolveAndSave;
 
         private WhileActivity ResolveAllParameters;
+
 
 
 

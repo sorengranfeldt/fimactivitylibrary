@@ -118,58 +118,6 @@ namespace Granfeldt.FIM.ActivityLibrary
             InitializeComponent();
         }
 
-        private static bool ShouldUpdateAttribute(object sourceValue, object targetValue)
-        {
-            if (targetValue == null || sourceValue == null)
-            {
-                if (targetValue != null || sourceValue != null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                Debugging.Log("Source value", sourceValue);
-                Debugging.Log("Target value", targetValue);
-
-                if (!targetValue.ToString().Equals(sourceValue.ToString(), StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        private static object CleanAndFormatFIMValue(object value)
-        {
-            if (value == null)
-                return null;
-            if (value.GetType() == typeof(bool))
-                return value;
-
-            // if the source value is a date, we need to 
-            // format the date for the update to take
-            // the value
-            DateTime outputDate;
-            if (DateTime.TryParse(value.ToString(), out outputDate))
-            {
-                value = outputDate.ToString("yyyy-MM-ddTHH:mm:ss.000");
-                return value;
-            }
-
-            // if it's a reference value, we need to remove leading urn:uuid text
-            // before later comparison
-            value = Regex.Replace(value.ToString(), "^urn:uuid:", "", RegexOptions.IgnoreCase);
-            return value;
-        }
-
         private void TargetUpdateNeeded_Condition(object sender, ConditionalEventArgs e)
         {
             List<UpdateRequestParameter> updateParameters = new List<UpdateRequestParameter>();
@@ -177,10 +125,10 @@ namespace Granfeldt.FIM.ActivityLibrary
             e.Result = false;
             object CurrentValue = TargetResource[this.AttributeName];
 
-            object convertedSourceValue = CleanAndFormatFIMValue(CurrentValue);
-            object convertedNewValue = CleanAndFormatFIMValue(this.NewValue);
+            object convertedSourceValue = FIMAttributeUtilities.FormatValue(CurrentValue);
+            object convertedNewValue = FIMAttributeUtilities.FormatValue(this.NewValue);
 
-            if (ShouldUpdateAttribute(convertedSourceValue, convertedNewValue))
+            if (FIMAttributeUtilities.ValuesAreDifferent(convertedSourceValue, convertedNewValue))
             {
                 e.Result = true;
 

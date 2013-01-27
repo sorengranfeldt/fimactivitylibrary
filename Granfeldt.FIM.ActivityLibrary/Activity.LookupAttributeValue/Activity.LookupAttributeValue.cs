@@ -1,6 +1,6 @@
 ﻿// January 17, 2013 | Soren Granfeldt
 //  - code revised and partially rewritten before CodePlex release
-// Januar 22, 2013 | Kristian Birk Thim
+// January 22, 2013 | Kristian Birk Thim
 // - Added support to return results in Enumerate.TotalResultsCount where count is 1.
 
 using System;

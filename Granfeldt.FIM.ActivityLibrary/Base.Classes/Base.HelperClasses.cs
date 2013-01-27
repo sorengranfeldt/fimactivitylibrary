@@ -81,6 +81,68 @@ namespace Granfeldt.FIM.ActivityLibrary
 
     }
 
+    public static class FIMAttributeUtilities
+    {
+
+        /// <summary>
+        /// Returns a formatted value ready for committing to create/update resource built-in activity
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static object FormatValue(object value)
+        {
+            if (value == null)
+                return null;
+
+            if (value.GetType() == typeof(bool))
+                return value;
+
+            // if the source value is a date, we need to format the date for the update to take the value
+            DateTime outputDate;
+            if (DateTime.TryParse(value.ToString(), out outputDate))
+            {
+                value = outputDate.ToString("yyyy-MM-ddTHH:mm:ss.000");
+                return value;
+            }
+
+            // if it's a reference value, we need to remove leading urn:uuid text before later comparison
+            value = Regex.Replace(value.ToString(), "^urn:uuid:", "", RegexOptions.IgnoreCase);
+            return value;
+        }
+
+        /// <summary>
+        /// Returns true if the two values are different (FIM evaluation)
+        /// </summary>
+        /// <param name="sourceValue"></param>
+        /// <param name="targetValue"></param>
+        /// <returns></returns>
+        public static bool ValuesAreDifferent(object sourceValue, object targetValue)
+        {
+            if (targetValue == null || sourceValue == null)
+            {
+                if (targetValue != null || sourceValue != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (!targetValue.ToString().Equals(sourceValue.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
     public class StringUtilities
     {
         /// <summary>
@@ -93,10 +155,10 @@ namespace Granfeldt.FIM.ActivityLibrary
         public static void ExtractWorkflowExpression(string Expression, out string Destination, out string DestinationAttribute)
         {
             Regex regex = new Regex(@"^\[//(?<destination>\w+)/+?(?<destinationattribute>\w*[^]])", RegexOptions.IgnoreCase);
-
             Destination = regex.Match(Expression).Result("${destination}");
             DestinationAttribute = regex.Match(Expression).Result("${destinationattribute}");
         }
 
     }
+
 }

@@ -187,6 +187,7 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         private void MoreParametersToResolve_Condition(object sender, ConditionalEventArgs e)
         {
+            Debugging.Log("Activity initialized");
             // we need to convert the string array to a list to
             // be able to remove values
             if (UnresolvedParameters == null)
@@ -313,5 +314,9 @@ namespace Granfeldt.FIM.ActivityLibrary
             Debugging.Log("Error: Argument Exception");
         }
 
+        private void ExitGracefully_ExecuteCode(object sender, EventArgs e)
+        {
+            Debugging.Log("Activity exited");
+        }
     }
 }

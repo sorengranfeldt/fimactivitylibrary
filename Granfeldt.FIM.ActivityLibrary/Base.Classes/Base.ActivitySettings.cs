@@ -49,7 +49,6 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         protected TableRow AddLookupActionDropDownList(String labelText, String controlID, int width, String defaultValue)
         {
-            Debugging.Log("Enter AddLookupActionDropDownList");
             TableRow row = new TableRow();
             TableCell labelCell = new TableCell();
             TableCell controlCell = new TableCell();
@@ -73,13 +72,11 @@ namespace Granfeldt.FIM.ActivityLibrary
             row.Cells.Add(labelCell);
             row.Cells.Add(controlCell);
 
-            Debugging.Log("Leave AddLookupActionDropDownList");
             return row;
         }
 
         protected string GetLookupActionDropDownList(string dropDownListID)
         {
-            Debugging.Log("Enter GetLookupActionDropDownList");
             string g = "";
             DropDownList ddl = (DropDownList)this.FindControl(dropDownListID);
             if (ddl != null)
@@ -89,13 +86,11 @@ namespace Granfeldt.FIM.ActivityLibrary
             }
             else
                 Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
-            Debugging.Log("Leave GetLookupActionDropDownList");
             return g;
         }
 
         protected void SetLookupActionDropDownList(string dropDownListID, string value)
         {
-            Debugging.Log("Enter SetLookupActionDropDownList");
             DropDownList ddl = (DropDownList)this.FindControl(dropDownListID);
             if (ddl != null)
             {
@@ -104,7 +99,6 @@ namespace Granfeldt.FIM.ActivityLibrary
             }
             else
                 Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
-            Debugging.Log("Leave SetLookupActionDropDownList");
         }
 
         #endregion
@@ -113,7 +107,6 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         protected TableRow AddActorDropDownList(String labelText, String controlID, int width, String defaultValue)
         {
-            Debugging.Log("Enter AddActorDropDownList");
             TableRow row = new TableRow();
             TableCell labelCell = new TableCell();
             TableCell controlCell = new TableCell();
@@ -141,13 +134,11 @@ namespace Granfeldt.FIM.ActivityLibrary
             row.Cells.Add(labelCell);
             row.Cells.Add(controlCell);
 
-            Debugging.Log("Leave AddActorDropDownList");
             return row;
         }
 
         protected string GetActorDropDownList(string dropDownListID)
         {
-            Debugging.Log("Enter GetActorDropDownList");
             string g = WellKnownGuids.FIMServiceAccount.ToString();
             DropDownList ddl = (DropDownList)this.FindControl(dropDownListID);
             if (ddl != null)
@@ -157,13 +148,11 @@ namespace Granfeldt.FIM.ActivityLibrary
             }
             else
                 Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
-            Debugging.Log("Leave GetActorDropDownList");
             return g;
         }
 
         protected void SetActorDropDownList(string dropDownListID, object Guid)
         {
-            Debugging.Log("Enter SetActorDropDownList");
             DropDownList ddl = (DropDownList)this.FindControl(dropDownListID);
             if (ddl != null)
             {
@@ -172,14 +161,12 @@ namespace Granfeldt.FIM.ActivityLibrary
             }
             else
                 Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
-            Debugging.Log("Leave SetActorDropDownList");
         }
 
         #endregion
 
         protected TableRow AddCheckbox(String labelText, String controlID, bool defaultValue)
         {
-            Debugging.Log("Enter AddCheckbox");
             TableRow row = new TableRow();
             TableCell labelCell = new TableCell();
             TableCell controlCell = new TableCell();
@@ -198,7 +185,6 @@ namespace Granfeldt.FIM.ActivityLibrary
             row.Cells.Add(labelCell);
             row.Cells.Add(controlCell);
 
-            Debugging.Log("Leave AddCheckbox");
             return row;
         }
 
@@ -269,11 +255,8 @@ namespace Granfeldt.FIM.ActivityLibrary
             textBox.Enabled = !readOnly;
         }
 
-
-
         protected void SetDropDownListDisabled(string dropDownListID, bool disabled)
         {
-            Debugging.Log("Enter SetDropDownListEnabled");
             DropDownList ddl = (DropDownList)this.FindControl(dropDownListID);
             if (ddl != null)
             {
@@ -281,7 +264,6 @@ namespace Granfeldt.FIM.ActivityLibrary
             }
             else
                 Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
-            Debugging.Log("Leave SetDropDownListEnabled");
         }
 
         #endregion

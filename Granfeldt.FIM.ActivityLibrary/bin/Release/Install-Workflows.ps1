@@ -2,7 +2,10 @@
 (
 	[string] $AssemblyName = "Granfeldt.FIM.ActivityLibrary.dll",
 	[switch] $CreateCodeRunActivity,
-	[switch] $CreateLookupActivity
+	[switch] $CreateLookupValueActivity,
+	[switch] $CreateCopyValuesActivity,
+	[switch] $CreateCreateObjectActivity,
+	[switch] $CreateDeleteObjectActivity
 )
 
 BEGIN
@@ -33,7 +36,7 @@ PROCESS
 		.\New-FIMActivityInformationConfigurationObject.ps1 @Params
 	}
 
-	if ($CreateLookupActivity)
+	if ($CreateLookupValueActivity)
 	{
 		$Params = @{ `
 			DisplayName = 'Lookup Attribute Value'
@@ -46,6 +49,49 @@ PROCESS
 		$Params
 		.\New-FIMActivityInformationConfigurationObject.ps1 @Params
 	}
+
+	if ($CreateCopyValuesActivity)
+	{
+		$Params = @{ `
+			DisplayName = 'Copy Values'
+			Description = 'Copies values to target or enumerated object'
+			ActivityName = "$ManifestModule.CopyValuesActivity"
+			TypeName = "$ManifestModule.WebUIs.CopyValuesActivitySettingsPart"
+			IsActionActivity = $true
+			AssemblyName = $LoadedAssembly.Fullname
+		}
+		$Params
+		.\New-FIMActivityInformationConfigurationObject.ps1 @Params
+	}
+
+	if ($CreateCreateObjectActivity)
+	{
+		$Params = @{ `
+			DisplayName = 'Create Object'
+			Description = 'Creates new object with initial values'
+			ActivityName = "$ManifestModule.CreateObjectActivity"
+			TypeName = "$ManifestModule.WebUIs.CreateObjectActivitySettingsPart"
+			IsActionActivity = $true
+			AssemblyName = $LoadedAssembly.Fullname
+		}
+		$Params
+		.\New-FIMActivityInformationConfigurationObject.ps1 @Params
+	}
+
+	if ($CreateDeleteObjectActivity)
+	{
+		$Params = @{ `
+			DisplayName = 'Delete Object'
+			Description = 'Deletes an object'
+			ActivityName = "$ManifestModule.DeleteObjectActivity"
+			TypeName = "$ManifestModule.WebUIs.DeleteObjectActivitySettingsPart"
+			IsActionActivity = $true
+			AssemblyName = $LoadedAssembly.Fullname
+		}
+		$Params
+		.\New-FIMActivityInformationConfigurationObject.ps1 @Params
+	}
+
 }
 
 END 
