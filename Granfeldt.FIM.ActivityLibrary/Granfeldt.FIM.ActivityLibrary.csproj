@@ -95,29 +95,29 @@
     <Compile Include="Activity.DeleteObject\Activity.DeleteObject.Designer.cs">
       <DependentUpon>Activity.DeleteObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="Activity.LookupAttributeValue\Activity.LookupAttributeValue.cs">
+    <Compile Include="Activity.LookupValue\Activity.LookupValue.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Activity.LookupAttributeValue\Activity.LookupAttributeValue.Designer.cs">
-      <DependentUpon>Activity.LookupAttributeValue.cs</DependentUpon>
+    <Compile Include="Activity.LookupValue\Activity.LookupValue.Designer.cs">
+      <DependentUpon>Activity.LookupValue.cs</DependentUpon>
     </Compile>
-    <Compile Include="Activity.LookupAttributeValue\Activity.LookupAttributeValue.SettingsPart.cs" />
-    <Compile Include="Base.Classes\AttributeValue\AttributeValue.cs" />
-    <Compile Include="Base.Classes\AttributeValue\AttributeValueCollection.cs" />
-    <Compile Include="Base.Classes\AttributeValue\ConditionalAttributeValue.cs" />
-    <Compile Include="Base.Classes\Base.ActivitySettings.cs" />
-    <Compile Include="Base.Classes\Base.HelperClasses.cs" />
+    <Compile Include="Activity.LookupValue\Activity.LookupValue.SettingsPart.cs" />
+    <Compile Include="Base\Base.AttributeValue\Base.AttributeValue.cs" />
+    <Compile Include="Base\Base.AttributeValue\Base.AttributeValueCollection.cs" />
+    <Compile Include="Base\Base.AttributeValue\Base.ConditionalAttributeValue.cs" />
+    <Compile Include="Base\Base.ActivitySettings\Base.ActivitySettings.cs" />
+    <Compile Include="Base\Base.Common\Base.Common.cs" />
     <Compile Include="Activity.CodeRun\Activity.CodeRun.SettingsPart.cs" />
-    <Compile Include="Base.Classes\Helper.FindResourcesActivity.cs">
+    <Compile Include="Base\Helper.FindResourcesActivity.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Base.Classes\Helper.FindResourcesActivity.Designer.cs">
+    <Compile Include="Base\Helper.FindResourcesActivity.Designer.cs">
       <DependentUpon>Helper.FindResourcesActivity.cs</DependentUpon>
     </Compile>
-    <Compile Include="Base.Classes\Helper.UpdateSingleValueAttributeAsNeededActivity.cs">
+    <Compile Include="Base\Helper.UpdateSingleValueAttributeAsNeededActivity.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Base.Classes\Helper.UpdateSingleValueAttributeAsNeededActivity.Designer.cs">
+    <Compile Include="Base\Helper.UpdateSingleValueAttributeAsNeededActivity.Designer.cs">
       <DependentUpon>Helper.UpdateSingleValueAttributeAsNeededActivity.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

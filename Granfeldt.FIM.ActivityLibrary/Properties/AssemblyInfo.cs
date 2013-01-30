@@ -30,4 +30,4 @@ using System.Runtime.InteropServices;
 //NOTE: When updating the namespaces in the project please add new or update existing the XmlnsDefinitionAttribute
 //You can add additional attributes in order to map any additional namespaces you have in the project
 //[assembly: System.Workflow.ComponentModel.Serialization.XmlnsDefinition("http://schemas.com/Granfeldt.FIM.ActivityLibrary", "Granfeldt.FIM.ActivityLibrary")]
-[assembly: AssemblyFileVersionAttribute("1.4.0.0")]
+[assembly: AssemblyFileVersionAttribute("1.5.0.0")]

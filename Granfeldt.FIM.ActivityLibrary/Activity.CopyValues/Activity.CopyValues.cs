@@ -3,11 +3,13 @@
 // January 22, 2013 | Soren Granfeldt
 //  - added function to convert different types/values
 //    before comparison.
+// January 22, 2013 | Soren Granfeldt
+//  - rewrote update logic to allow updating more the one object
 // January 29, 2013 | Kristian Birk Thim
-//  - Extended the AttributeValue class to include more logic specific to it.
-//  - Created ConditionalAttributeValue. A AttributeValue class which includes conditional properties (Inherits from AttributeValue)
-//  - Created AttributeValueCollection which includes some of the processing logic specific to a collection of AttributeValues.
-//  - Re-Wrote parts of the main code to incorporate the new classes.
+//  - extended the AttributeValue class to include more logic specific to it.
+//  - created ConditionalAttributeValue. A AttributeValue class which includes conditional properties (Inherits from AttributeValue)
+//  - created AttributeValueCollection which includes some of the processing logic specific to a collection of AttributeValues.
+//  - re-wrote parts of the main code to incorporate the new classes.
 
 using System;
 using System.Collections;

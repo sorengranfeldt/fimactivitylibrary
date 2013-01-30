@@ -1,4 +1,7 @@
-﻿PARAM
+﻿# January 30, 2013 | Soren Granfeldt
+#	- changed LookupAttributeValue to LookupValueActivity
+
+PARAM
 (
 	[string] $AssemblyName = "Granfeldt.FIM.ActivityLibrary.dll",
 	[switch] $CreateCodeRunActivity,
@@ -41,8 +44,8 @@ PROCESS
 		$Params = @{ `
 			DisplayName = 'Lookup Attribute Value'
 			Description = 'Using XPath query looks up value in FIM Service'
-			ActivityName = "$ManifestModule.LookupAttributeValueActivity"
-			TypeName = "$ManifestModule.WebUIs.LookupAttributeValueActivitySettingsPart"
+			ActivityName = "$ManifestModule.LookupValueActivity"
+			TypeName = "$ManifestModule.WebUIs.LookupValueActivitySettingsPart"
 			IsActionActivity = $true
 			AssemblyName = $LoadedAssembly.Fullname
 		}
