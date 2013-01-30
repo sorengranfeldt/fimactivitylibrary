@@ -48,6 +48,7 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.YesUpdateTarget = new System.Workflow.Activities.IfElseBranchActivity();
             this.faultHandlerActivity1 = new System.Workflow.ComponentModel.FaultHandlerActivity();
             this.ShouldUpdateTargetObject = new System.Workflow.Activities.IfElseActivity();
+            this.SetTargetOnAttributeValueCollection = new System.Workflow.Activities.CodeActivity();
             this.ReadTarget = new Microsoft.ResourceManagement.Workflow.Activities.ReadResourceActivity();
             this.ExtractTargetObjectID = new System.Workflow.Activities.CodeActivity();
             this.FindTargetResource = new Granfeldt.FIM.ActivityLibrary.FindResourcesActivity();
@@ -136,6 +137,11 @@ namespace Granfeldt.FIM.ActivityLibrary
             this.ShouldUpdateTargetObject.Activities.Add(this.faultHandlersActivity3);
             this.ShouldUpdateTargetObject.Name = "ShouldUpdateTargetObject";
             // 
+            // SetTargetOnAttributeValueCollection
+            // 
+            this.SetTargetOnAttributeValueCollection.Name = "SetTargetOnAttributeValueCollection";
+            this.SetTargetOnAttributeValueCollection.ExecuteCode += new System.EventHandler(this.SetTargetResource_ExecuteCode);
+            // 
             // ReadTarget
             // 
             this.ReadTarget.ActorId = new System.Guid("00000000-0000-0000-0000-000000000000");
@@ -204,6 +210,7 @@ namespace Granfeldt.FIM.ActivityLibrary
             // UpdateSequence
             // 
             this.UpdateSequence.Activities.Add(this.ReadTarget);
+            this.UpdateSequence.Activities.Add(this.SetTargetOnAttributeValueCollection);
             this.UpdateSequence.Activities.Add(this.ShouldUpdateTargetObject);
             this.UpdateSequence.Name = "UpdateSequence";
             // 
@@ -272,6 +279,8 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         #endregion
 
+        private CodeActivity SetTargetOnAttributeValueCollection;
+
         private CodeActivity codeActivity1;
 
         private FaultHandlerActivity faultHandlerActivity2;
@@ -329,6 +338,8 @@ namespace Granfeldt.FIM.ActivityLibrary
         private IfElseActivity ShouldUpdateTargetObject;
 
         private Microsoft.ResourceManagement.Workflow.Activities.ReadResourceActivity ReadTarget;
+
+
 
 
 

@@ -3,6 +3,11 @@
 // January 22, 2013 | Soren Granfeldt
 //  - added function to convert different types/values
 //    before comparison.
+// January 29, 2013 | Kristian Birk Thim
+//  - Extended the AttributeValue class to include more logic specific to it.
+//  - Created ConditionalAttributeValue. A AttributeValue class which includes conditional properties (Inherits from AttributeValue)
+//  - Created AttributeValueCollection which includes some of the processing logic specific to a collection of AttributeValues.
+//  - Re-Wrote parts of the main code to incorporate the new classes.
 
 using System;
 using System.Collections;
@@ -27,20 +32,6 @@ namespace Granfeldt.FIM.ActivityLibrary
 
     public partial class CopyValuesActivity : SequenceActivity
     {
-
-        public class AttributeValue
-        {
-            public string SourceAttributeName { get; set; }
-            public object SourceAttributeValue { get; set; }
-
-            public string TargetAttributeName { get; set; }
-            public object TargetAttributeValue { get; set; }
-
-            public bool ShouldResolve = false;
-
-            public string ConditionAttributeName { get; set; }
-            public bool ConditionAttributeValue { get; set; }
-        }
 
         #region Properties
 
@@ -181,7 +172,7 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         AttributeValue ResolvedAttributeValue;
         List<string> selectionAttributes = new List<string>();
-        List<AttributeValue> attrValues = new List<AttributeValue>();
+        AttributeValueCollection attrValues = new AttributeValueCollection();
 
         public CopyValuesActivity()
         {
@@ -204,7 +195,16 @@ namespace Granfeldt.FIM.ActivityLibrary
                         Debugging.Log("Add selection attribute", se);
                         selectionAttributes.Add(se);
                     }
-                    attrValues.Add(new AttributeValue { ShouldResolve = s[0].Trim().Contains("[//"), SourceAttributeName = s[0].Trim(), ConditionAttributeName = s[1].Trim(), TargetAttributeName = s[2].Trim() });
+                    if (s[1].Trim() == "")
+                    {
+                        //Non-conditional AttributeValue
+                        attrValues.Add(new AttributeValue(s[0].Trim(), s[2].Trim()));
+                    }
+                    else
+                    {
+                        //Conditional AttributeValue
+                        attrValues.Add(new ConditionalAttributeValue(s[0].Trim(), s[2].Trim(), s[1].Trim(), this.UpdateOnTrue));
+                    }
                 }
             }
         }
@@ -240,14 +240,14 @@ namespace Granfeldt.FIM.ActivityLibrary
             // the target attribute value (if present)
             Debugging.Log("Missing value or invalid XPath reference", this.ResolveSourceGrammar.GrammarExpression);
             ResolvedAttributeValue.SourceAttributeValue = null;
-            ResolvedAttributeValue.ShouldResolve = false;
+            //ResolvedAttributeValue.ShouldResolve = false;
         }
 
         private void FetchResolvedGrammar_ExecuteCode(object sender, EventArgs e)
         {
             Debugging.Log("Resolved", this.ResolvedSourceExpression);
             ResolvedAttributeValue.SourceAttributeValue = this.ResolvedSourceExpression;
-            ResolvedAttributeValue.ShouldResolve = false;
+            //ResolvedAttributeValue.ShouldResolve = false; //IsResolved is set automatically
         }
 
         private void ShouldDoLookup_Condition(object sender, ConditionalEventArgs e)
@@ -325,59 +325,10 @@ namespace Granfeldt.FIM.ActivityLibrary
             try
             {
                 List<UpdateRequestParameter> updateParameters = new List<UpdateRequestParameter>();
-                foreach (AttributeValue val in attrValues)
-                {
-                    val.TargetAttributeValue = this.ReadTarget.Resource[val.TargetAttributeName] != null ? this.ReadTarget.Resource[val.TargetAttributeName] : null;
-                    Debugging.Log(val.TargetAttributeName, val.TargetAttributeValue);
 
-                    if (!(string.IsNullOrEmpty(val.ConditionAttributeName)))
-                    {
-                        val.ConditionAttributeValue = this.ReadTarget.Resource[val.ConditionAttributeName] != null ? (bool)this.ReadTarget.Resource[val.ConditionAttributeName] : true;
-                    }
-                    else
-                    {
-                        val.ConditionAttributeValue = true;
-                    }
+                //Gets all non matching AttributeValues in AttrValues.
+                updateParameters = attrValues.Changes;
 
-                    // we need the original (non-converted) value if we are doing a removal as we must specify the original value (even a local date/time)
-                    object originalTargetValue = val.TargetAttributeValue;
-                    val.TargetAttributeValue = FIMAttributeUtilities.FormatValue(val.TargetAttributeValue);
-                    val.SourceAttributeValue = FIMAttributeUtilities.FormatValue(val.SourceAttributeValue);
-
-                    if (FIMAttributeUtilities.ValuesAreDifferent(val.SourceAttributeValue, val.TargetAttributeValue))
-                    {
-                        if (val.SourceAttributeValue == null)
-                        {
-                            // we are in a delete state
-                            if (val.ConditionAttributeValue == this.UpdateOnTrue)
-                            {
-                                Debugging.Log(string.Format("Deleting value '{1}' from {0}", val.TargetAttributeName, val.TargetAttributeValue == null ? "(null)" : val.TargetAttributeValue));
-                                updateParameters.Add(new UpdateRequestParameter(val.TargetAttributeName, UpdateMode.Remove, originalTargetValue));
-                            }
-                            else
-                            {
-                                Debugging.Log("Condition does not allow deleting", val.TargetAttributeName);
-                            }
-                        }
-                        else
-                        {
-                            // we are in an update state
-                            if (val.ConditionAttributeValue == this.UpdateOnTrue)
-                            {
-                                Debugging.Log(string.Format("Updating {0} from '{1}' to '{2}'", val.TargetAttributeName, val.TargetAttributeValue == null ? "(null)" : val.TargetAttributeValue, val.SourceAttributeValue));
-                                updateParameters.Add(new UpdateRequestParameter(val.TargetAttributeName, UpdateMode.Modify, val.SourceAttributeValue));
-                            }
-                            else
-                            {
-                                Debugging.Log("Condition does not allow updating", val.TargetAttributeName);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Debugging.Log(string.Format("No need to update {0}. Value is already {1}", val.TargetAttributeName, val.TargetAttributeValue == null ? "(null)" : val.TargetAttributeValue));
-                    }
-                }
                 // if we have added any update parameters this means that there are changes
                 // so we prepare the update activtiy with relevant information and
                 // set e.Result to true to ensure that the Update activity is called
@@ -425,6 +376,12 @@ namespace Granfeldt.FIM.ActivityLibrary
         private void FaultArgumentNullException_ExecuteCode(object sender, EventArgs e)
         {
             Debugging.Log("Error", UpdateTarget.ExecutionResult);
+        }
+
+        private void SetTargetResource_ExecuteCode(object sender, EventArgs e)
+        {
+            //Sets the TargetResource on the attValues collection
+            attrValues.TargetResource = this.ReadTarget.Resource;
         }
     }
 }
