@@ -248,7 +248,7 @@ namespace Granfeldt.FIM.ActivityLibrary
                 {
                     compileErrors.AppendFormat("Compile Error: {0} in Ln {2} Col {3}-{1}\r\n", ce.ErrorNumber, ce.ErrorText, ce.Line, ce.Column);
                 }
-				Tracer.TraceError("Couldn't compile {0}\r\n" + compileErrors);
+				Tracer.TraceError("Couldn't compile {0}" + compileErrors);
             }
             Assembly assembly = cr.CompiledAssembly;
             compiled = assembly.CreateInstance("FIMDynamicClass");

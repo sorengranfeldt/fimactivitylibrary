@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Goverco")]
 [assembly: AssemblyProduct("Granfeldt.FIM.ActivityLibrary")]
-[assembly: AssemblyCopyright("Copyright © Goverco 2013")]
+[assembly: AssemblyCopyright("Copyright © Goverco 2013-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
