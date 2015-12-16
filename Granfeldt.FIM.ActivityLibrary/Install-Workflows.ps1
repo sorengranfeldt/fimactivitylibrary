@@ -1,5 +1,7 @@
 ﻿# January 30, 2013 | Soren Granfeldt
 #	- changed LookupAttributeValue to LookupValueActivity
+# december 16, 2015 | soren granfeldt
+#	- added ClearSingleValueActivity
 
 PARAM
 (
@@ -8,6 +10,7 @@ PARAM
 	[switch] $CreateLookupValueActivity,
 	[switch] $CreateCopyValuesActivity,
 	[switch] $CreateCreateObjectActivity,
+	[switch] $CreateClearSingleValueActivity,
 	[switch] $CreateDeleteObjectActivity
 )
 
@@ -95,6 +98,19 @@ PROCESS
 		.\New-FIMActivityInformationConfigurationObject.ps1 @Params
 	}
 
+	if ($CreateClearSingleValueActivity)
+	{
+		$Params = @{ `
+			DisplayName = 'Clear Single Value'
+			Description = 'Clears a single value attribute'
+			ActivityName = "$ManifestModule.ClearSingleValuedAttributeActivity"
+			TypeName = "$ManifestModule.WebUIs.ClearSingleValuedAttributeActivitySettingsPart"
+			IsActionActivity = $true
+			AssemblyName = $LoadedAssembly.Fullname
+		}
+		$Params
+		.\New-FIMActivityInformationConfigurationObject.ps1 @Params
+	}
 }
 
 END 

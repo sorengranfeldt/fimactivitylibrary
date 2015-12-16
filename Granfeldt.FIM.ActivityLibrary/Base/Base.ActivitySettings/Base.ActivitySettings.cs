@@ -12,11 +12,6 @@ namespace Granfeldt.FIM.ActivityLibrary
     class BaseActivitySettingsPart : ActivitySettingsPart
     {
 
-        #region Utility Functions
-
-        /// <summary>
-        /// Create a TableRow that contains a label and a textbox.
-        /// </summary>
         protected TableRow AddTableRowTextBox(String labelText, String controlID, int width, int maxLength, Boolean multiLine, String defaultValue)
         {
             TableRow row = new TableRow();
@@ -45,8 +40,60 @@ namespace Granfeldt.FIM.ActivityLibrary
             return row;
         }
 
-        #region Lookup Action Dropdown
+        protected void SetDropdownSelectedValue(string dropDownListID, string value)
+        {
+            DropDownList ddl = (DropDownList)this.FindControl(dropDownListID);
+            if (ddl != null)
+            {
+                if (!string.IsNullOrEmpty(value))
+                    ddl.SelectedValue = value;
+            }
+            else
+                Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
+        }
 
+        protected TableRow AddAddRemoveDropDownList(string labelText, string controlID, int width, string defaultValue)
+        {
+            TableRow row = new TableRow();
+            TableCell labelCell = new TableCell();
+            TableCell controlCell = new TableCell();
+
+            Label oLabel = new Label();
+            oLabel.Text = labelText;
+            oLabel.CssClass = base.LabelCssClass;
+            labelCell.Controls.Add(oLabel);
+
+            DropDownList ddl = new DropDownList();
+            ddl.ID = controlID;
+            ddl.Width = width;
+
+            ddl.Items.Add(new ListItem("Add", "Add")); 
+            ddl.Items.Add(new ListItem("Remove", "Remove"));
+            ddl.SelectedValue = defaultValue;
+            controlCell.Controls.Add(ddl);
+
+            row.Cells.Add(labelCell);
+            row.Cells.Add(controlCell);
+
+            return row;
+        }
+        protected void SetAddRemoveDropDownList(string dropDownListID, string value)
+        {
+            SetDropdownSelectedValue(dropDownListID, value);
+        }
+        protected string GetAddRemoveDropDownList(string dropDownListID)
+        {
+            string g = "";
+            DropDownList ddl = (DropDownList)this.FindControl(dropDownListID);
+            if (ddl != null)
+            {
+                if (!string.IsNullOrEmpty(ddl.SelectedValue))
+                    g = ddl.SelectedValue.ToString();
+            }
+            else
+                Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
+            return g;
+        }
         protected TableRow AddLookupActionDropDownList(String labelText, String controlID, int width, String defaultValue)
         {
             TableRow row = new TableRow();
@@ -91,19 +138,8 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         protected void SetLookupActionDropDownList(string dropDownListID, string value)
         {
-            DropDownList ddl = (DropDownList)this.FindControl(dropDownListID);
-            if (ddl != null)
-            {
-                if (!string.IsNullOrEmpty(value))
-                    ddl.SelectedValue = value;
-            }
-            else
-                Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
+            SetDropdownSelectedValue(dropDownListID, value);
         }
-
-        #endregion
-
-        #region Actor Dropdown
 
         protected TableRow AddActorDropDownList(String labelText, String controlID, int width, String defaultValue)
         {
@@ -151,19 +187,10 @@ namespace Granfeldt.FIM.ActivityLibrary
             return g;
         }
 
-        protected void SetActorDropDownList(string dropDownListID, object Guid)
+        protected void SetActorDropDownList(string dropDownListID, object value)
         {
-            DropDownList ddl = (DropDownList)this.FindControl(dropDownListID);
-            if (ddl != null)
-            {
-                if (Guid != null)
-                    ddl.SelectedValue = Guid.ToString();
-            }
-            else
-                Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
+            SetDropdownSelectedValue(dropDownListID, value.ToString());
         }
-
-        #endregion
 
         protected TableRow AddCheckbox(String labelText, String controlID, bool defaultValue)
         {
@@ -266,7 +293,6 @@ namespace Granfeldt.FIM.ActivityLibrary
                 Debugging.Log("Cannot find control with ID '" + dropDownListID + "'");
         }
 
-        #endregion
 
         /// <summary>
         /// Called when a user clicks the Save button in the Workflow Designer. 

@@ -36,23 +36,19 @@
   <ItemGroup>
     <Reference Include="Microsoft.IdentityManagement.Activities, Version=4.1.2273.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Microsoft.IdentityManagement.Activities.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.IdentityManagement.SettingsContract">
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft Forefront Identity Manager\2010\Service\Microsoft.IdentityManagement.SettingsContract.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>FIMDLLs\Microsoft.IdentityManagement.Activities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityManagement.WebUI.Controls, Version=4.1.2273.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Microsoft.IdentityManagement.WebUI.Controls.dll</HintPath>
+      <HintPath>FIMDLLs\Microsoft.IdentityManagement.WebUI.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityManagement.WFExtensionInterfaces, Version=4.1.2273.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Microsoft.IdentityManagement.WFExtensionInterfaces.dll</HintPath>
+      <HintPath>FIMDLLs\Microsoft.IdentityManagement.WFExtensionInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ResourceManagement, Version=4.1.2273.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft Forefront Identity Manager\2010\Service\Microsoft.ResourceManagement.dll</HintPath>
+      <HintPath>FIMDLLs\Microsoft.ResourceManagement.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Workflow.Activities" />
@@ -68,6 +64,20 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity.AddRemoveFromMultivalue\Activity.AddRemoveFromMultiValue.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Activity.AddRemoveFromMultivalue\Activity.AddRemoveFromMultiValue.Designer.cs">
+      <DependentUpon>Activity.AddRemoveFromMultiValue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Activity.AddRemoveFromMultivalue\Activity.AddRemoveFromMultiValue.SettingsPart.cs" />
+    <Compile Include="Activity.ClearSingleValueAttribute\Activity.ClearSingleValuedAttribute.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Activity.ClearSingleValueAttribute\Activity.ClearSingleValuedAttribute.Designer.cs">
+      <DependentUpon>Activity.ClearSingleValuedAttribute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Activity.ClearSingleValueAttribute\ClearSingleValuedAttributeActivitySettingsPart.cs" />
     <Compile Include="Activity.CodeRun\Activity.CodeRun.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -108,6 +118,12 @@
     <Compile Include="Base\Base.ActivitySettings\Base.ActivitySettings.cs" />
     <Compile Include="Base\Base.Common\Base.Common.cs" />
     <Compile Include="Activity.CodeRun\Activity.CodeRun.SettingsPart.cs" />
+    <Compile Include="Base\Helper.AddRemoveMultiValueAsNeededActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Base\Helper.AddRemoveMultiValueAsNeededActivity.Designer.cs">
+      <DependentUpon>Helper.AddRemoveMultiValueAsNeededActivity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\Helper.FindResourcesActivity.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -126,6 +142,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Tracer.cs" />
     <Content Include="readme.txt" />
     <None Include="Add-AssemblyToGlobalAssemblyCache.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

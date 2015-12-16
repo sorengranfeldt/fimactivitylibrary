@@ -10,7 +10,6 @@ using Microsoft.Win32;
 
 namespace Granfeldt.FIM.ActivityLibrary
 {
-
     public class WellKnownGuids
     {
         public static Guid BuiltInSynchronizationAccount = new Guid("fb89aefa-5ea1-47f1-8890-abe7797d6497");

@@ -5,6 +5,8 @@
 //    due to clashes with built-in naming convention
 // January 18, 2013 | Soren Granfeldt
 //  - changed update to use helper update activity
+// December 16, 2015 | soren granfeldt
+//	- changed logging to tuse tracer
 
 using System;
 using System.CodeDom.Compiler;
@@ -41,7 +43,7 @@ namespace Granfeldt.FIM.ActivityLibrary
         {
             get
             {
-                return ((Microsoft.ResourceManagement.WebServices.WSResourceManagement.ResourceType)(base.GetValue(Granfeldt.FIM.ActivityLibrary.CodeRunActivity.TargetResourceProperty)));
+                return ((ResourceType)(base.GetValue(Granfeldt.FIM.ActivityLibrary.CodeRunActivity.TargetResourceProperty)));
             }
             set
             {
@@ -187,19 +189,19 @@ namespace Granfeldt.FIM.ActivityLibrary
 
         private void MoreParametersToResolve_Condition(object sender, ConditionalEventArgs e)
         {
-            Debugging.Log("Activity initialized");
+            Tracer.Enter("Activity initialized");
             // we need to convert the string array to a list to
             // be able to remove values
             if (UnresolvedParameters == null)
             {
                 UnresolvedParameters = this.Parameters.ToList();
-                Debugging.Log("Resolving parameters");
+               Tracer.TraceInformation("Resolving parameters");
             }
             e.Result = false;
             if (UnresolvedParameters.Count > 0)
             {
                 this.ResolveParameterValue.GrammarExpression = UnresolvedParameters[0];
-                Debugging.Log("Resolving", UnresolvedParameters[0]);
+				Tracer.TraceInformation("Resolving {0}", UnresolvedParameters[0]);
                 UnresolvedParameters.RemoveAt(0);
                 e.Result = true;
             }
@@ -208,15 +210,15 @@ namespace Granfeldt.FIM.ActivityLibrary
         private void SaveResolvedValue_ExecuteCode(object sender, EventArgs e)
         {
             ResolvedParameters.Add(HttpUtility.HtmlDecode(this.ResolveParameterValue.ResolvedExpression));
-            Debugging.Log("Resolved to", HttpUtility.HtmlDecode(this.ResolveParameterValue.ResolvedExpression));
+			Tracer.TraceInformation("Resolved to {0}", HttpUtility.HtmlDecode(this.ResolveParameterValue.ResolvedExpression));
         }
 
         private void NonExistingGrammarException_ExecuteCode(object sender, EventArgs e)
         {
-            // if we get here, the resolve has failed. If the value that we're
-            // trying to resolve doesn't exist, we also get here. We
-            // assume that there is no value and set value to null
-            Debugging.Log("Missing value or invalid XPath reference (returning [null])", this.ResolveParameterValue.GrammarExpression);
+			// if we get here, the resolve has failed. If the value that we're
+			// trying to resolve doesn't exist, we also get here. We
+			// assume that there is no value and set value to null
+			Tracer.TraceError("Missing value or invalid XPath reference (returning [null]) {0}", this.ResolveParameterValue.GrammarExpression);
             ResolvedParameters.Add(null);
         }
 
@@ -246,7 +248,7 @@ namespace Granfeldt.FIM.ActivityLibrary
                 {
                     compileErrors.AppendFormat("Compile Error: {0} in Ln {2} Col {3}-{1}\r\n", ce.ErrorNumber, ce.ErrorText, ce.Line, ce.Column);
                 }
-                Debugging.Log(new Exception("Couldn't compile\r\n" + compileErrors));
+				Tracer.TraceError("Couldn't compile {0}\r\n" + compileErrors);
             }
             Assembly assembly = cr.CompiledAssembly;
             compiled = assembly.CreateInstance("FIMDynamicClass");
@@ -256,18 +258,18 @@ namespace Granfeldt.FIM.ActivityLibrary
         {
             if (compiled == null)
             {
-                Debugging.Log(new NullReferenceException("Code must contain a class named FIMDynamicClass and that class must contain a method called FIMDynamicFunction"));
+				Tracer.TraceError("Code must contain a class named FIMDynamicClass and that class must contain a method called FIMDynamicFunction");
             }
-            Debugging.Log("Parameter count", ResolvedParameters.Count);
+			Tracer.TraceInformation("Parameter count {0}", ResolvedParameters.Count);
             foreach (object param in ResolvedParameters)
             {
-                Debugging.Log("Adding parameter", param);
+				Tracer.TraceInformation("Adding parameter {0}", param);
             }
             MethodInfo mi = compiled.GetType().GetMethod("FIMDynamicFunction");
-            Debugging.Log("Executing code");
+			Tracer.TraceInformation("Executing code");
             codeReturnValue = mi.Invoke(compiled, ResolvedParameters.ToArray());
-            Debugging.Log("Code executed");
-            Debugging.Log("Code return value", codeReturnValue);
+			Tracer.TraceInformation("Code executed");
+			Tracer.TraceInformation("Code return value {0}", codeReturnValue);
         }
 
         private void ShouldUpdateTarget_Condition(object sender, ConditionalEventArgs e)
@@ -275,7 +277,9 @@ namespace Granfeldt.FIM.ActivityLibrary
             // try to get parent workflow.
             if (!SequentialWorkflow.TryGetContainingWorkflow(this, out containingWorkflow))
             {
-                throw new InvalidOperationException("Could not get parent workflow");
+				string errorMessage = "Could not get parent workflow";
+				Tracer.TraceError(errorMessage);
+                throw new InvalidOperationException(errorMessage);
             }
 
             StringUtilities.ExtractWorkflowExpression(this.Destination, out destinationObject, out destinationAttribute);
@@ -300,7 +304,7 @@ namespace Granfeldt.FIM.ActivityLibrary
             }
             else
             {
-                Debugging.Log(new Exception("Could not resolved destination. Please specify as [//Target/Attribute] or [//WorkflowData/Parameter]"));
+                Tracer.TraceError("Could not resolved destination. Please specify as [//Target/Attribute] or [//WorkflowData/Parameter]");
             }
         }
 
@@ -311,12 +315,12 @@ namespace Granfeldt.FIM.ActivityLibrary
             // assume that there is no value and set source value to null
             // which effectively results in a 'Delete' operation on
             // the target attribute value (if present)
-            Debugging.Log("Error: Argument Exception");
+            Tracer.TraceError("Error: Argument Exception");
         }
 
         private void ExitGracefully_ExecuteCode(object sender, EventArgs e)
         {
-            Debugging.Log("Activity exited");
+            Tracer.TraceInformation("Activity exited");
         }
     }
 }
