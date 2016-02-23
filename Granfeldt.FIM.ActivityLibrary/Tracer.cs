@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Text;
 
 namespace Granfeldt.FIM.ActivityLibrary
 {
@@ -10,7 +9,7 @@ namespace Granfeldt.FIM.ActivityLibrary
 		const string SwitchName = "WFL";
 		const string SourceName = "WFL";
 		public static TraceSource Trace = new TraceSource(SourceName, SourceLevels.All);
-		static string IndentText = ""; 
+		static string IndentText = "";
 
 		public static int IndentLevel
 		{
@@ -35,13 +34,9 @@ namespace Granfeldt.FIM.ActivityLibrary
 		{
 			TraceInformation("enter {0}", entryPoint);
 			Indent();
-			//Process currentProc = Process.GetCurrentProcess();
-			//Tracer.TraceInformation("memory-usage {0:n0}Kb, private memomry {1:n0}Kb", GC.GetTotalMemory(true) / 1024, currentProc.PrivateMemorySize64 / 1024);
 		}
 		public static void Exit(string entryPoint)
 		{
-			//Process currentProc = Process.GetCurrentProcess();
-			//Tracer.TraceInformation("memory-usage {0:n0}Kb, private memory {1:n0}Kb", GC.GetTotalMemory(true) / 1024, currentProc.PrivateMemorySize64 / 1024);
 			Unindent();
 			TraceInformation("exit {0}", entryPoint);
 		}
@@ -56,6 +51,10 @@ namespace Granfeldt.FIM.ActivityLibrary
 		public static void TraceError(string message, int id, params object[] param)
 		{
 			Trace.TraceEvent(TraceEventType.Error, id, IndentText + message, param);
+		}
+		public static void TraceError(string message)
+		{
+			Trace.TraceEvent(TraceEventType.Error, message.GetHashCode(), message);
 		}
 		public static void TraceError(string message, Exception ex)
 		{

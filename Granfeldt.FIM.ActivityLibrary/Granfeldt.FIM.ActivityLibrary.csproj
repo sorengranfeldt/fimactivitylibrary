@@ -36,19 +36,19 @@
   <ItemGroup>
     <Reference Include="Microsoft.IdentityManagement.Activities, Version=4.1.2273.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>FIMDLLs\Microsoft.IdentityManagement.Activities.dll</HintPath>
+      <HintPath>ReferenceDLLs\4.1.2273\Microsoft.IdentityManagement.Activities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityManagement.WebUI.Controls, Version=4.1.2273.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>FIMDLLs\Microsoft.IdentityManagement.WebUI.Controls.dll</HintPath>
+      <HintPath>ReferenceDLLs\4.1.2273\Microsoft.IdentityManagement.WebUI.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityManagement.WFExtensionInterfaces, Version=4.1.2273.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>FIMDLLs\Microsoft.IdentityManagement.WFExtensionInterfaces.dll</HintPath>
+      <HintPath>ReferenceDLLs\4.1.2273\Microsoft.IdentityManagement.WFExtensionInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ResourceManagement, Version=4.1.2273.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>FIMDLLs\Microsoft.ResourceManagement.dll</HintPath>
+      <HintPath>ReferenceDLLs\4.1.2273\Microsoft.ResourceManagement.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Workflow.Activities" />
